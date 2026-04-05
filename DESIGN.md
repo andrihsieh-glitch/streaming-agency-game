@@ -1204,6 +1204,303 @@ All entries stored permanently. Scrolling back to Week 3 from Week 60 should fee
 
 ---
 
-*Last updated: Week Advancement Logic, Agency Actions Economy, Starting Values, UI/UX Core Screens, Event Feed Generation Rules.*
-*Next: Opening Scene & Onboarding, Dialogue System, Investor System, Remaining character work.*
+---
+
+## OPENING SCENE & ONBOARDING
+
+### Opening Sequence (pre-gameplay, unskippable first time)
+
+SCREEN 1 — Black. Two lines fade in slowly:
+> *Three years ago, Hana called you at 2am and said: let's just do it.*
+> *You said yes before she finished the sentence.*
+Both fade out.
+
+SCREEN 2 — Character Setup. Minimal, one lamp warmth, no music.
+- Name field: free text, cursor blinks, no placeholder
+- City: Taipei / Tokyo / Seoul with one flavor line each
+  - Taipei: "Where most of them already are."
+  - Tokyo: "A city that keeps its distance. So do you, sometimes."
+  - Seoul: "Colder than you expected. You're still figuring that out."
+- Agency name: free text, skippable (defaults to placeholder, changeable later)
+
+SCREEN 3 — Establishing line using player's name + city:
+> *[Name]. Taipei. Week 1. The agency has two clients, one shared calendar, and exactly 6.5 weeks of runway. Hana already has opinions about all three.*
+
+Then: full UI loads. No fanfare. No tutorial popup. Just the game.
+
+### Week 1 Feed Entries (pre-populated)
+
+Entry 1 — HANA (type: hana):
+*"Hana's first message came in at 7am. 'I've been thinking about the schedule. Also I found a good ramen place near the office that I want you to try before you have opinions about anything else today. Also good morning.' You've known her for eight years. This is exactly what eight years sounds like."*
+
+Entry 2 — MIRAE (type: signal):
+*"Mirae sent her streaming schedule for the week at midnight. No message. Just the schedule, formatted correctly, with a note at the bottom: 'let me know if you want changes.' She's been doing everything herself for two years. It's going to take her a while to believe you're actually here."*
+
+Entry 3 — YUKI (type: neutral):
+*"Yuki posted a new piece at 11pm. A sketch — something with light in it. 180 people watched them draw it live. They didn't announce it in the agency chat. They just made it."*
+
+Entry 4 — AGENCY (type: signal):
+*"The runway is 6.5 weeks. That's the number that matters this week. Hana knows. She hasn't said anything yet, which means she's decided to trust you to handle it."*
+
+### Talent Stagger by City
+- Taipei: Mirae + Yuki Week 1, Cato Week 2, Sable Week 3
+- Tokyo/Seoul: One talent Week 1, others trickle over Weeks 2–3
+
+### Gentle Failure States
+- No schedule assigned → auto-rest + mild feed note
+- Brand deal ignored → expires Week 2, feed note, no rep damage
+- Runway < 4 weeks → Hana tone shifts, no alarm
+- Mirae pushed in Week 1 → burnout ticks invisibly, symptom feed entry Week 3–4
+
+### Onboarding Philosophy
+No tutorials. Three teaching channels:
+1. Feed tells you what happened (outcomes as narrative)
+2. UI shows what's possible (live projected energy, trait conflict ⚠)
+3. Hana tells you what she thinks (as a person, not a guide)
+
+### First Five Weeks Arc
+- Week 1: Meet Mirae + Yuki, first schedule, cash visible
+- Week 2: Cato joins (Taipei) — louder energy, contrast immediate
+- Week 3: Sable joins (Taipei) — quietest entry yet
+- Week 4–5: First real cash pressure, first drama seed possible
+- Week 6–8: Mirae Pivot 01 fires. Tutorial period over. Game begins.
+
+---
+
+## DIALOGUE SYSTEM
+
+### Core Philosophy
+Dialogue opens when something requires direct human contact — pivot moments, crisis responses, 1-on-1s that surface something real. Rarity makes it weight-bearing. Most communication happens through the feed.
+
+Three rules:
+1. Not every message needs a response option
+2. Choices are labeled by action, never by moral weight
+3. Conversations are remembered — Week 6 can surface in Week 40
+
+### Visual Design
+Chat interface modal. Opens over main panel. Feed visible behind, dimmed. Topbar remains.
+
+- Character messages: left-aligned, soft bubble, accent color tint
+- Ren has no bubble — responses trigger next beat, not a sent message
+- Timestamps: small, right-aligned, feel real
+- Response options: card group at bottom, visually distinct from conversation
+- Continue button: single centered button, lowercase "continue", no options needed
+
+### Four Conversation Types
+
+TYPE 1 — CHECK-IN
+Casual, low-stakes, relationship maintenance. 3–5 messages, 0–1 response moments.
+Triggered by: hana_1on1 secondary slot, direct check-in agency action.
+Ends with: relationship tick, sometimes hidden state reveal.
+
+TYPE 2 — 1-ON-1 (SURFACING)
+Deeper. 6–10 messages, 2–3 response moments.
+Triggered by: feed warning follow-up, Hana flagging something.
+Ends with: hidden stat revealed, something said or unsaid that persists.
+
+TYPE 3 — PIVOT CONVERSATION
+Named, weighted, unrepeatable. 10–20 messages, 3–4 response moments.
+Fully written, fully branching. Some choices close options permanently.
+Ends with: arc state change, memory tags written.
+
+TYPE 4 — CRISIS RESPONSE
+High stakes. 2–4 setup messages, one major decision.
+Visual difference: darker tint, no timestamps, larger response cards.
+Each option has one line of subtext showing what it IS, not outcome prediction.
+Ends immediately after choice — consequence plays out in feed.
+
+### Response Option Rules
+- Framed as actions/intents, never as Ren's scripted words
+  ✅ "Ask her what she thinks we should do."
+  ✅ "Admit you should have talked to him first."
+  ❌ "'Hey, I hear you. Let's figure this out together.'"
+- No good/bad labels — options reflect different values
+- Continue button for moments that don't need a choice
+
+### Conversation Memory
+- Full conversation log stored per character
+- Future conversations can reference specific past exchanges by content
+- Character profile timeline shows key conversations — readable history
+- Hana can cite specific past promises if you broke them
+
+### Ren Has No Voice
+Ren speaks through action framing only. The character voice belongs entirely to the people Ren is talking to. This keeps the player projected into Ren rather than watching them perform.
+
+### Proximity Effect on Dialogue
+Remote: timestamps visible, sense of asynchrony
+Local (after offline interaction): first message has no timestamp, feels more like talking than texting, physical space occasionally referenced
+
+### Character Message Voices
+
+HANA: Multiple short messages in sequence. Thinks out loud. Lowercase casual. Periods are intentional — serious messages have them, casual ones don't.
+
+MIRAE: Complete sentences, always. Minimal. Long gaps between messages. Questions are genuine, never small talk.
+
+YUKI: Short, precise. Starts with context before the point. Uses "I think" as accuracy, not hedge.
+
+CATO: Fast. Fragments. Multiple quick messages when excited/nervous. Single message, no punctuation, when processing something hard.
+
+SABLE: One message, exactly what she means. Never multiple. No typos. Precise but not cold.
+
+KAI: Short. "hey" as a full message. Long gap. Then something real. Communicates in the gaps.
+
+STAFF: More professional. Joon warmest. Miso businesslike. Felix like a PM. Dana makes hard numbers sound neutral. Priya careful with words.
+
+### Hana's Arc in Dialogue Texture
+Arc 1 (warm): She initiates, asks follow-ups, leaves space, uses your name
+Arc 2 (forming): Still initiates, but messages contain unasked questions
+Drifted: Responds when you initiate. Complete messages. No loose ends. No follow-up bait.
+Post-departure: One optional late-game conversation. No gameplay consequence. Just what's left.
+
+### Unresponded Messages
+Some conversations only have a continue button. Sable's early messages. Quiet moments.
+This is also how Hana's drift manifests — she stops leaving space for response. The player has fewer opportunities to say anything because she's stopped inviting it.
+
+---
+
+## OPENING SCENE & ONBOARDING
+
+### Opening Sequence (pre-gameplay, unskippable first run)
+
+SCREEN 1 — Black. Two lines fade in slowly:
+"Three years ago, Hana called you at 2am and said: let's just do it."
+"You said yes before she finished the sentence."
+Both fade out. Black again.
+
+SCREEN 2 — Character Setup. Minimal, one lamp warmth, ambient room tone.
+- Name field: free text, cursor blinks until player types
+- City: Taipei / Tokyo / Seoul with one flavor line each
+  - Taipei: "Where most of them already are."
+  - Tokyo: "A city that keeps its distance. So do you, sometimes."
+  - Seoul: "Colder than you expected. You're still figuring that out."
+- Agency name: free text, skippable (defaults to placeholder, changeable later)
+
+SCREEN 3 — Establishing line. Player name + city + specific flavor:
+Taipei: "[Name]. Taipei. Week 1. The agency has two clients, one shared calendar, and exactly 6.5 weeks of runway. Hana already has opinions about all three."
+Tokyo: "[Name]. Tokyo. Week 1. The agency has two clients, a shared calendar, and a Hana who is three time zones closer than you."
+Seoul: "[Name]. Seoul. Week 1. The agency has two clients, a shared calendar, and a runway that won't last. Hana is in Taipei. The distance is mostly fine. Mostly."
+
+Then: full UI loads. No fanfare. No tutorial popup. Just the game.
+
+### Week 1 Feed Entries (pre-populated)
+
+ENTRY 1 — Hana (hana type):
+"Hana's first message came in at 7am. 'I've been thinking about the schedule. Also I found a good ramen place near the office. Also good morning.' You've known her for eight years. This is exactly what eight years sounds like."
+
+ENTRY 2 — Mirae (signal type):
+"Mirae sent her streaming schedule at midnight. No message. Just the schedule, formatted correctly, with a note: 'let me know if you want changes.' She's been doing everything herself for two years. It's going to take her a while to believe you're actually here."
+
+ENTRY 3 — Yuki (neutral type):
+"Yuki posted a new piece at 11pm. A sketch — something with light in it. 180 people watched them draw it live. They didn't announce it in the agency chat. They just made it."
+
+ENTRY 4 — Agency (signal type):
+"The runway is 6.5 weeks. That's the number that matters this week. Hana knows. She hasn't said anything yet, which means she's decided to trust you to handle it."
+
+### Roster Stagger by City
+Taipei: Mirae + Yuki visible Week 1. Cato joins Week 2. Sable joins Week 3.
+Tokyo/Seoul: One talent visible Week 1. Others trickle in over first 3 weeks.
+
+### Onboarding Philosophy — No Tutorials
+Three teaching channels, none are popups:
+1. The feed tells you what happened (outcomes described as events, not stat changes)
+2. The UI shows what's possible (live energy preview, slot labels, trait conflict ⚠)
+3. Hana tells you what she thinks (not as a guide — as a person with opinions)
+
+### Gentle Failure States (early game)
+- No schedule assigned: auto-rest fires, feed entry explains gently, no hard penalty
+- Brand deal expires: feed notes the miss, no reputation damage, lesson learned
+- Runway drops < 4 weeks: Hana's tone shifts (not an alarm — a texture change)
+- Push stream Week 1: works fine, burnout ticks invisibly, pays off later as context
+
+### First Five Weeks Shape
+Week 1: Meet Mirae + Yuki. First schedule. Hana warm. Cash visible.
+Week 2: Cato joins. Louder energy. Contrast is immediate.
+Week 3: Sable joins. Quietest entry yet. Three distinct energies now in feed.
+Week 4–5: First real cash pressure. First drama seed may be planted.
+Week 6–8: Mirae Pivot 01 fires. Tutorial period over. Game begins.
+
+### What Player Knows by Week 5 (without being told)
+- Hana has opinions and a memory
+- Mirae works alone and needs trust
+- Yuki creates on their own terms
+- Cato is performing and it takes energy
+- Cash is real and time-limited
+- The schedule matters more than it looks
+- The feed is worth reading
+
+---
+
+## DIALOGUE SYSTEM
+
+### Core Philosophy
+Dialogue opens when something requires direct human contact — a pivot, a crisis, a 1-on-1 that surfaces something real. Rarity makes it weight-bearing.
+Rules: Not every message needs a response. Choices are never labeled good/bad — labeled by what you do. Conversations remember.
+
+### Visual Design — Chat Interface
+Modal over main panel. Feed visible behind, dimmed. Topbar remains.
+- Character messages: left-aligned, soft bubble, accent color tint
+- No Ren bubble — responses trigger next beat, Ren has no scripted voice
+- Timestamps: small, right-aligned, feel real
+- Response options: card group at bottom, distinct from conversation
+- Continue button: lowercase "continue", centered, understated
+- Character header: small portrait (32×32), name, arc-state color temperature
+
+### Four Conversation Types
+
+TYPE 1 — CHECK-IN
+Casual, relationship maintenance. Triggered by hana_1on1 slot or agency action.
+Structure: 3–5 messages, 0–1 response moments, ends with relationship tick + possible hidden state reveal.
+
+TYPE 2 — 1-ON-1 (SURFACING)
+Deeper. Triggered by feed warning Follow Up or Hana flag.
+Structure: 6–10 messages, 2–3 response moments, surfaces hidden stat, ends with permanent state change.
+
+TYPE 3 — PIVOT CONVERSATION
+Named, weighted, unrepeatable. 2–3 per character.
+Structure: 10–20 messages, 3–4 response moments, ends with arc version state change. Some choices close options permanently.
+
+TYPE 4 — CRISIS RESPONSE
+High stakes. Fires at breaking point or major drama crisis.
+Structure: 2–4 setup messages, one major decision (3–4 options with cost subtext), immediate consequence, aftermath queued for feed.
+Visual: darker tint, no timestamps, response options larger with subtext framing (not outcome prediction).
+
+### Response Option Rules
+- Labeled by action/intent, never by scripted dialogue
+- ✅ "Ask her what she thinks we should do."
+- ✅ "Admit you should have talked to him first."
+- ❌ "'Hey, I hear you. Let's figure this out together.'"
+- Crisis options include one subtext line showing what the choice costs/signals — not outcome prediction, just framing
+
+### Conversation Memory
+Every dialogue writes to conversation history log. Future conversations can reference past ones explicitly. Character Profile timeline shows key conversations abbreviated. Player can read back to Week 6 from Week 50.
+
+The gap mechanic: if Ren stated an intent and acted against it, both are logged. Characters notice the gap. Hana notices most.
+
+### Character Message Voices (fixed, don't change with arc state)
+HANA: Multiple short messages in sequence. Thinks out loud. Lowercase casual. Period = serious. No period = casual.
+MIRAE: Complete sentences always. Minimal. Long gaps. Questions are genuine.
+YUKI: Short and precise. Context before point. "I think" used for accuracy not hedging.
+CATO: Fast fragments in sequence when excited. Single message no punctuation when processing.
+SABLE: One message, complete, no typos. Precise but not cold.
+KAI: "hey" as full message. Long gap. Then something real.
+STAFF: Joon warmest, Miso most businesslike, Felix like a PM, Dana makes hard numbers neutral, Priya thoughtful and careful.
+
+### Unresponded Messages
+Continue button only — no choice. Sable's early messages. Quiet moments.
+Hana's drift manifest: she stops leaving space for response. Player has fewer opportunities to say anything because she's stopped inviting it.
+
+### Offline vs. Online Texture
+Remote: timestamps visible, sense of asynchrony
+Local/after offline: no timestamps on first message, feels more like talking, may reference physical space ("I'm still thinking about what you said at the ramen place")
+
+### Hana Arc in Dialogue
+Arc 1 (warm): She initiates, asks follow-ups, leaves space, uses your name
+Arc 2 (forming): Still initiates, messages contain unasked questions
+Drifted: Responds when you initiate. Complete. No loose ends. No follow-up bait.
+Post-departure: One optional late-game conversation. No gameplay consequence. Just what's left.
+
+---
+
+*Last updated: Week Advancement, Agency Actions, Starting Values, UI/UX, Event Feed, Opening Scene, Dialogue System.*
+*Next: Investor System (#8), Ren romance arc, Talent 06, staff hiring UX, save system.*
 *Fetch this document at the start of any build session.*
